@@ -1,0 +1,3 @@
+idea:
+  gate:
+    class-path: org.idea.creator.api.gates
