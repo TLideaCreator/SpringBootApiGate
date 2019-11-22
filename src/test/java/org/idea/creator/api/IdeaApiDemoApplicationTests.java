@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class IdeaApiDemoApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void testGateAuth() {
 	}
 
 }
