@@ -1,7 +1,5 @@
 package org.idea.creator.api.gate;
 
-import org.idea.creator.api.gate.annotation.Gate;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

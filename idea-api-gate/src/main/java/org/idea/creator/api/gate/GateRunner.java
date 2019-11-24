@@ -4,9 +4,6 @@ import org.idea.creator.api.gate.annotation.GateScan;
 import org.idea.creator.api.gate.config.GateUnit;
 import org.idea.creator.api.gate.exception.GateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEvent;
@@ -28,6 +25,7 @@ public class GateRunner implements ApplicationListener {
 
     @Override
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
+        System.out.println("application run here scan gate");
         if(applicationEvent instanceof ApplicationReadyEvent){
             Object source = ((ApplicationReadyEvent)applicationEvent).getSource();
             SpringApplication app = (SpringApplication) source;
