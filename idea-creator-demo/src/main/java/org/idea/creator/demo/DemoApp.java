@@ -3,7 +3,6 @@ package org.idea.creator.demo;
 import org.idea.creator.api.gate.annotation.GateScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScans;
 
 /**
  * 测试应用
