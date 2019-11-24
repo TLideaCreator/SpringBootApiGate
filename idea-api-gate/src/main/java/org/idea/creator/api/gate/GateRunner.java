@@ -25,7 +25,6 @@ public class GateRunner implements ApplicationListener {
 
     @Override
     public void onApplicationEvent(ApplicationEvent applicationEvent) {
-        System.out.println("application run here scan gate");
         if(applicationEvent instanceof ApplicationReadyEvent){
             Object source = ((ApplicationReadyEvent)applicationEvent).getSource();
             SpringApplication app = (SpringApplication) source;
@@ -35,6 +34,7 @@ public class GateRunner implements ApplicationListener {
                     GateUnit.loadGateClass(Arrays.asList(scans.path()));
                 }
             } catch (GateException ignored) { }
+            System.out.println("application: gate scanning finished");
         }
     }
 }
