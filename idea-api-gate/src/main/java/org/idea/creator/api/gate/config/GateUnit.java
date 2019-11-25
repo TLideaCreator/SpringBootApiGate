@@ -3,6 +3,7 @@ package org.idea.creator.api.gate.config;
 import org.idea.creator.api.gate.IGateInterface;
 import org.idea.creator.api.gate.annotation.Gate;
 import org.idea.creator.api.gate.exception.GateException;
+import org.springframework.context.ApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,13 @@ import java.util.jar.JarFile;
 
 public class GateUnit {
 
+    private static ApplicationContext appContext = null;
+
     private static Map<String, Class<?>> classHashMap = new HashMap<>();
+
+    public static void setAppContext(ApplicationContext context){
+        appContext = context;
+    }
 
     public static void loadGateClass (List<String> classPaths) throws GateException{
         if(classPaths == null || classPaths.size() < 1 || !classHashMap.isEmpty()){
@@ -45,14 +52,9 @@ public class GateUnit {
             if(clazz == null || clazz.isAssignableFrom(IGateInterface.class)){
                 throw new GateException("gate with name "+gate+" not exist");
             }
-            try {
-                Method method = clazz.getMethod("handler",HttpServletRequest.class, HttpServletResponse.class, Object.class);
-                Object obj = method.invoke(clazz.newInstance(),request, response, handler);
-                if(!(boolean)obj){
-                    throw new GateException("gate "+ gate +" valid failed!");
-                }
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                throw new GateException("gate with name " + gate + " error ");
+            IGateInterface gateInterface = (IGateInterface) appContext.getBean(clazz);
+            if(!gateInterface.handler(request, response, handler)){
+                throw new GateException("gate "+ gate +" valid failed!");
             }
         }
         return true;
