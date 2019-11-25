@@ -74,29 +74,34 @@ public class TestGate implements IGateInterface {
 ### 在controller中使用
 
 ```
-package com.example.demo;
-
+package org.idea.creator.demo;
 
 import org.idea.creator.api.gate.annotation.GateKeeper;
+import org.idea.creator.api.result.annotation.ResultResponse;
+import org.idea.creator.api.result.result.ResultEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 测试controller
+ * @author lqh
+ */
 @RestController
-@GateKeeper(gates = {"auth"}) //注册全部controller都要通过的验证
+@GateKeeper(gates={"auth"})
+@ResultResponse
 public class TestCtrl {
-    @GetMapping("/")   
-    //相应结果返回"auth"
-    public String auth() {
-        return "auth";
-    }
-
-
     @GetMapping("/test")
-    @GateKeeper(gates = {"test"})
-    //需要单独使用的gate可以注册在单独接口上,但是test返回false此接口报错
-    public String test() {
-        return "test";
+    @GateKeeper(gates={"test"})
+    public String test(){
+      return "test";
     }
+
+    @GetMapping("/hello")
+    public ResultEnum hello(){
+        return ResultEnum.STRING.setData("hello");
+    }
+
 }
+
 
 ```

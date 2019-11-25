@@ -1,6 +1,8 @@
 package org.idea.creator.demo;
 
 import org.idea.creator.api.gate.annotation.GateKeeper;
+import org.idea.creator.api.result.annotation.ResultResponse;
+import org.idea.creator.api.result.result.ResultEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @GateKeeper(gates={"auth"})
+@ResultResponse
 public class TestCtrl {
     @GetMapping("/test")
     @GateKeeper(gates={"test"})
@@ -18,8 +21,8 @@ public class TestCtrl {
     }
 
     @GetMapping("/hello")
-    public String hello(){
-        return "hello";
+    public ResultEnum hello(){
+        return ResultEnum.STRING.setData("hello");
     }
 
 }
