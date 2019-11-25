@@ -19,6 +19,6 @@ public class TestGate implements IGateInterface {
 
     @Override
     public boolean handler(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        return testService.randStatus();
+        return false;
     }
 }

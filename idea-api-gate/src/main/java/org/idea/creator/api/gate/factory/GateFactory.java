@@ -1,4 +1,4 @@
-package org.idea.creator.api.gate.config;
+package org.idea.creator.api.gate.factory;
 
 import org.idea.creator.api.gate.IGateInterface;
 import org.idea.creator.api.gate.annotation.Gate;
@@ -8,8 +8,6 @@ import org.springframework.context.ApplicationContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -21,12 +19,22 @@ import java.util.jar.JarFile;
  * @author lqh
  */
 
-public class GateUnit {
+public class GateFactory {
 
 
-    private static Map<String, IGateInterface> classHashMap = new HashMap<>();
+    private Map<String, IGateInterface> classHashMap = new HashMap<>();
 
-    public static void loadGateClass(ApplicationContext context){
+    private static GateFactory mInstance = new GateFactory();
+
+    private GateFactory() {
+    }
+
+    public static GateFactory getInstance() {
+        return mInstance;
+    }
+
+
+    public void loadGateClass(ApplicationContext context){
         for (String beanName: context.getBeanDefinitionNames()) {
             Object object = context.getBean(beanName);
             if(object instanceof IGateInterface){
@@ -37,7 +45,7 @@ public class GateUnit {
         }
     }
 
-    public static void loadGateClass (List<String> classPaths) throws GateException{
+    public void loadGateClass (List<String> classPaths) throws GateException{
         if(classPaths == null || classPaths.size() < 1 || !classHashMap.isEmpty()){
             return;
         }
@@ -47,11 +55,11 @@ public class GateUnit {
         }
     }
 
-    public static boolean checkGateEnable(Set<String> gateName, HttpServletRequest request, HttpServletResponse response, Object handler) throws GateException{
+    public boolean checkGateEnable(Set<String> gateName, HttpServletRequest request, HttpServletResponse response, Object handler) throws GateException{
         for (String gate : gateName) {
             IGateInterface gateInterface = classHashMap.get(gate);
             if(gateInterface == null){
-                throw new GateException("gate with name "+gate+" not exist");
+                throw new GateException(404, "gate with name "+gate+" not exist");
             }
             if(!gateInterface.handler(request, response, handler)){
                 throw new GateException("gate "+ gate +" valid failed!");

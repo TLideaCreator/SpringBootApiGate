@@ -28,4 +28,13 @@ public class Result<T> implements Serializable {
         this.msg = msg;
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"code\":" + code +
+                ", \"msg\":\"" + msg + "\"" +
+                ", \"data\":" + data +
+                '}';
+    }
 }

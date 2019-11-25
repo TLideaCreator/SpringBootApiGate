@@ -25,6 +25,9 @@ public class ResultException extends Exception {
         super(message, cause);
     }
 
+    protected void setCode(Integer code) {
+        this.code = code;
+    }
     public Integer getCode() {
         return code;
     }

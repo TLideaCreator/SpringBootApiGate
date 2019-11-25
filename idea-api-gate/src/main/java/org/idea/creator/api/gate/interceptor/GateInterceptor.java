@@ -1,15 +1,20 @@
 package org.idea.creator.api.gate.interceptor;
 
 import org.idea.creator.api.gate.annotation.GateKeeper;
-import org.idea.creator.api.gate.config.GateUnit;
+import org.idea.creator.api.gate.exception.GateException;
+import org.idea.creator.api.gate.factory.GateFactory;
+import org.idea.creator.api.result.result.Result;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,8 +39,31 @@ public class GateInterceptor  implements HandlerInterceptor{
                 final GateKeeper gateKeeper = method.getAnnotation(GateKeeper.class);
                 gateNames.addAll(Arrays.asList(gateKeeper.gates()));
             }
-            return GateUnit.checkGateEnable(gateNames,request, response, handler);
+            try{
+                return GateFactory.getInstance().checkGateEnable(gateNames,request, response, handler);
+            }catch (GateException ex){
+                PrintWriter writer = null;
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json; charset=utf-8");
+                try{
+                    writer = response.getWriter();
+                    Result<Object> result = new Result<>();
+                    result.setCode(ex.getCode());
+                    result.setMsg(ex.getMessage());
+                    writer.print(result);
+                }catch (Exception e){
+
+                }finally {
+                    if(writer != null){
+                        writer.close();
+                    }
+                }
+
+                return false;
+            }
         }
-        return false;
+        return true;
     }
+
+
 }

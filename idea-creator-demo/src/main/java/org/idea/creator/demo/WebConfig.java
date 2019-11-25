@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new GateInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new RequestInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new GateInterceptor()).addPathPatterns("/**");
     }
 }

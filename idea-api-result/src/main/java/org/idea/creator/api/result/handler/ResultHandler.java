@@ -36,11 +36,7 @@ public class ResultHandler implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if(mediaType.getType().equals("application") && mediaType.getSubtype().equals("json")){
             Result result = new Result();
-            if(body instanceof ResultException){
-                ResultException error = (ResultException) body;
-                result.setCode(error.getCode());
-                result.setMsg(error.getMessage());
-            }else if(body instanceof ResultEnum){
+            if(body instanceof ResultEnum){
                 result.setCode(Result.SUCCESS);
                 result.setMsg("success");
                 result.setData(((ResultEnum) body).getData());
