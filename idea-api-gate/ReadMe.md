@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 ```
 context:
   listener:
-    classes: org.idea.creator.api.gate.GateRunner
+    classes: org.idea.creator.api.gate.GateListener
 ```
 
 
