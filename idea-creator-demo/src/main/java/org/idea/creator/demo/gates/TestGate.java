@@ -9,11 +9,16 @@ import org.springframework.stereotype.Repository;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author lqh
+ */
 @Gate(value = "test")
 public class TestGate implements IGateInterface {
+    @Autowired
+    TestService testService;
 
     @Override
     public boolean handler(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        return false;
+        return testService.randStatus();
     }
 }

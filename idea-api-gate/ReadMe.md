@@ -1,27 +1,5 @@
 # api 门卫
 ## 使用方法
-### 主程序入口
-```
-package org.idea.creator.demo;
-
-import org.idea.creator.api.gate.annotation.GateScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-/**
- * 测试应用
- * @author lqh
- */
-
-@SpringBootApplication
-@GateScan(path={"org.idea.creator.demo.gates"})  //过滤方法所在目录
-public class DemoApp {
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApp.class, args);
-    }
-}
-
-```
 
 ### 添加拦截器
 

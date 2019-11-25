@@ -4,6 +4,10 @@ import org.idea.creator.api.gate.annotation.GateKeeper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 测试controller
+ * @author lqh
+ */
 @RestController
 @GateKeeper(gates={"auth"})
 public class TestCtrl {

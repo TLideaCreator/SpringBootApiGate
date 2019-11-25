@@ -23,12 +23,18 @@ import java.util.jar.JarFile;
 
 public class GateUnit {
 
-    private static ApplicationContext appContext = null;
 
-    private static Map<String, Class<?>> classHashMap = new HashMap<>();
+    private static Map<String, IGateInterface> classHashMap = new HashMap<>();
 
-    public static void setAppContext(ApplicationContext context){
-        appContext = context;
+    public static void loadGateClass(ApplicationContext context){
+        for (String beanName: context.getBeanDefinitionNames()) {
+            Object object = context.getBean(beanName);
+            if(object instanceof IGateInterface){
+                Gate gate = object.getClass().getAnnotation(Gate.class);
+                String value = gate.value();
+                classHashMap.put(value, (IGateInterface) object);
+            }
+        }
     }
 
     public static void loadGateClass (List<String> classPaths) throws GateException{
@@ -39,20 +45,14 @@ public class GateUnit {
         for (String clazzPath : classPaths) {
             classSet.addAll(loadClassInPath(clazzPath));
         }
-        for (Class<?> clazz : classSet) {
-            Gate gate = clazz.getAnnotation(Gate.class);
-            String value = gate.value();
-            classHashMap.put(value, clazz);
-        }
     }
 
     public static boolean checkGateEnable(Set<String> gateName, HttpServletRequest request, HttpServletResponse response, Object handler) throws GateException{
         for (String gate : gateName) {
-            Class<?> clazz = classHashMap.get(gate);
-            if(clazz == null || clazz.isAssignableFrom(IGateInterface.class)){
+            IGateInterface gateInterface = classHashMap.get(gate);
+            if(gateInterface == null){
                 throw new GateException("gate with name "+gate+" not exist");
             }
-            IGateInterface gateInterface = (IGateInterface) appContext.getBean(clazz);
             if(!gateInterface.handler(request, response, handler)){
                 throw new GateException("gate "+ gate +" valid failed!");
             }
