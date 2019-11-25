@@ -16,6 +16,7 @@
     <modules>
         <module>idea-api-gate</module>
         <module>idea-creator-demo</module>
+        <module>idea-api-result</module>
     </modules>
 
 

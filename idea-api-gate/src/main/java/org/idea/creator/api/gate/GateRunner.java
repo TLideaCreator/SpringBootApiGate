@@ -3,6 +3,7 @@ package org.idea.creator.api.gate;
 import org.idea.creator.api.gate.annotation.GateScan;
 import org.idea.creator.api.gate.config.GateUnit;
 import org.idea.creator.api.gate.exception.GateException;
+import org.idea.creator.api.gate.interceptor.GateInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -14,6 +15,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
@@ -29,13 +32,11 @@ public class GateRunner implements ApplicationListener {
             Object source = ((ApplicationReadyEvent)applicationEvent).getSource();
             SpringApplication app = (SpringApplication) source;
             GateScan scans = app.getMainApplicationClass().getAnnotation(GateScan.class);
-
             try {
                 if(scans != null){
                     GateUnit.loadGateClass(Arrays.asList(scans.path()));
                 }
             } catch (GateException ignored) { }
-            System.out.println("application: gate scanning finished");
         }else if(applicationEvent instanceof ContextRefreshedEvent) {
             ApplicationContext appCtx = ((ContextRefreshedEvent) applicationEvent).getApplicationContext();
             GateUnit.setAppContext(appCtx);

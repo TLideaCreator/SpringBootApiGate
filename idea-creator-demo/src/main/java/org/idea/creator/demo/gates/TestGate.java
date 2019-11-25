@@ -11,11 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Gate(value = "test")
 public class TestGate implements IGateInterface {
-    @Autowired
-    TestService testService;
 
     @Override
     public boolean handler(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        return testService.randStatus();
+        return false;
     }
 }
