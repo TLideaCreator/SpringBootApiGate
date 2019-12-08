@@ -11,9 +11,12 @@
 
     <artifactId>idea-api-gate</artifactId>
 
-
-
     <dependencies>
+        <dependency>
+            <groupId>io.github.tlideacreator</groupId>
+            <artifactId>idea-api-result</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-parent</artifactId>
